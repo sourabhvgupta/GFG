@@ -1,0 +1,43 @@
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin:'application'
+mainClassName = "com.gfg.texteditor.driver.Driver"
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'org.projectlombok:lombok:1.16.4',
+            'com.google.guava:guava:25.0-jre',
+            "org.powermock:powermock-module-testng:1.5.6",
+            "org.powermock:powermock-api-mockito:1.5.6",
+            "org.easytesting:fest-joda-time-assert:1.1.0"
+
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
+
+
+    testCompile 'org.testng:testng:6.1.1',
+            'org.mock-server:mockserver-netty:3.9.1'
+
+}
+
+
+test {
+    useTestNG()
+    ignoreFailures = true
+    // this is required for running PowerMock on JVM 7+
+    jvmArgs '-noverify'
+
+    outputs.upToDateWhen { false }
+
+    afterTest { desc, result ->
+        println "[TEST] ${desc.className} - ${desc.name} : ${result}"
+    }
+}
+
+
